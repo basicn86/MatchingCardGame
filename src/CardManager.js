@@ -14,7 +14,7 @@ class CardManager extends React.Component {
             { id: 5, coveredImageSrc: "./img/cover.png", imageSrc: './img/cherries.png', matched: false, covered: true },
             { id: 6, coveredImageSrc: "./img/cover.png", imageSrc: './img/cherries.png', matched: false, covered: true },
             { id: 7, coveredImageSrc: "./img/cover.png", imageSrc: './img/lemon.png', matched: false, covered: true },
-            { id: 8, coveredImageSrc: "./img/cover.png", imageSrc: './img/lemon.png', matched: false, covered: true},
+            { id: 8, coveredImageSrc: "./img/cover.png", imageSrc: './img/lemon.png', matched: false, covered: true },
             { id: 9, coveredImageSrc: "./img/cover.png", imageSrc: './img/strawberry.png', matched: false, covered: true },
             { id: 10, coveredImageSrc: "./img/cover.png", imageSrc: './img/strawberry.png', matched: false, covered: true },
             { id: 11, coveredImageSrc: "./img/cover.png", imageSrc: './img/watermelon.png', matched: false, covered: true },
@@ -42,18 +42,28 @@ class CardManager extends React.Component {
         const { cards } = this.state;
 
         return (
-            <div className="card-manager">
-                {cards.map(card => (
-                    <SingleCard
-                        key={card.id}
-                        id={card.id}
-                        coveredImageSrc={card.coveredImageSrc}
-                        imageSrc={card.imageSrc}
-                        matched={card.matched}
-                        covered={card.covered}
-                        handleCardFlip={this.handleCardFlip}
-                    />
-                ))}
+            <div>
+                <div>
+                    <h1>Card Matching Memory Game</h1>
+                    <h2>Match the cards to win!</h2>
+                    <p className="how-to-play"><b>How to play:</b> click on a card to flip it over. Try to find the matching card. If you find a match, the cards will stay flipped. If you don't find a match, the cards will flip back over after a short delay.</p>
+                </div>
+                <div className="controls">
+                    <button onClick={() => window.location.reload()}>Restart</button>
+                </div>
+                <div className="card-manager">
+                    {cards.map(card => (
+                        <SingleCard
+                            key={card.id}
+                            id={card.id}
+                            coveredImageSrc={card.coveredImageSrc}
+                            imageSrc={card.imageSrc}
+                            matched={card.matched}
+                            covered={card.covered}
+                            handleCardFlip={this.handleCardFlip}
+                        />
+                    ))}
+                </div>
             </div>
         );
     }
@@ -77,8 +87,12 @@ class CardManager extends React.Component {
 
         if (this.state.firstCard === null) {
             this.setState(prevState => ({ firstCard: InputCard }));
+            //Flips the card
+            const Covered = InputCard.state.covered;
+            InputCard.setState({ covered: !Covered });
             return;
         }
+
         this.setState({ secondCard: InputCard });
 
         if (this.checkMatch(this.state.firstCard, InputCard)) {
@@ -112,7 +126,7 @@ class CardManager extends React.Component {
 
             this.resetSelectedCards();
             console.log("Wrong match, ended timeout");
-        }, 3000);
+        }, 2000);
     }
 
     resetSelectedCards = () => {
